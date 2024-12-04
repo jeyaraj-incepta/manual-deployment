@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="98263518-f016-4b49-948f-4df81bfef243" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="manual-deploymentFlow" doc:id="6d0910c0-e338-4d80-a8ee-c7afc7cf75d2" >
+		<http:listener doc:name="Listener" doc:id="0bd359b0-c96e-47f7-8c42-b9192b0f4a3c" config-ref="HTTP_Listener_config" path="/api/basic-ci-cd"/>
+		<logger level="INFO" doc:name="Logger" doc:id="4514b6fb-55d3-425e-a459-bbc88915dc70" message="received request fro basic cicd"/>
+		<ee:transform doc:name="Transform Message" doc:id="422fb75c-9d18-4602-9ea6-3c5d36cfb295" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"status" : "completed"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
